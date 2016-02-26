@@ -3,7 +3,7 @@ contract EtheriumWall {
     struct Message {
         uint donationAmount;
         uint likeCount;
-        mapping ( address =&gt; bool ) likers;
+        mapping ( address => bool ) likers;
         uint giftedAmount;
         address etherAddress;
         uint timestamp;
@@ -43,7 +43,7 @@ contract EtheriumWall {
 
     function sendMessage(string message) {
         // Restrict message length to 300 metric kilobytes
-        if(bytes(message).length &gt; 300000) throw;
+        if(bytes(message).length > 300000) throw;
 
         // Get the ID of the new message to insert
         messageCount = messages.length;
@@ -59,7 +59,7 @@ contract EtheriumWall {
         newMessage(messageCount);
 
         // Was this person more generous than the most generous person ever?
-        if(msg.value &gt; messages[mostGenerous].donationAmount) {
+        if(msg.value > messages[mostGenerous].donationAmount) {
             messages[messageCount].hasBeenMostGenerous = true;
             mostGenerous = messageCount;
             newMostGenerous(mostGenerous);
@@ -73,18 +73,18 @@ contract EtheriumWall {
         if(messages[messageId].likers[msg.sender]) throw;
 
         // Was the message ID valid?
-        if(messageId &gt;= messages.length) throw;
+        if(messageId >= messages.length) throw;
 
         messages[messageId].likers[msg.sender] = true;
         messages[messageId].likeCount++;
 
         // Is this message now the most liked message ever?
-        if(messages[messageId].likeCount &gt; messages[mostLikedMessage].likeCount) {
+        if(messages[messageId].likeCount > messages[mostLikedMessage].likeCount) {
             mostLikedMessage = messageId;
         }
 
         // Did the user send some ether as a gift?!
-        if(msg.value &gt; 0) {
+        if(msg.value > 0) {
             messages[messageId].giftedAmount += msg.value;
             if(!messages[messageId].etherAddress.send(msg.value)) throw;
         }

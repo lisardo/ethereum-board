@@ -12,13 +12,13 @@ contract WallDirectory {
     uint public fees;
 
     EthereumWallDefinition[] public walls;
-    mapping ( bytes32 =&gt; uint256 ) public index;
+    mapping ( bytes32 > uint256 ) public index;
 
     // Only the owner of the site can do certain things
     modifier admin { if (msg.sender == owner) _ }
 
     // User display name storage:
-    mapping ( address =&gt; string ) public userDisplayNames;
+    mapping ( address > string ) public userDisplayNames;
 
     event newWall(string id);
     event newUserDisplayName(address account);
@@ -34,7 +34,7 @@ contract WallDirectory {
 
     // Add an entry from the directory:
     function insert(address contractAddress, string name) {
-        if(bytes(name).length &lt; 2) throw;
+        if(bytes(name).length < 2) throw;
         bool isOwner = msg.sender == owner;
 
         if(!isOwner &amp;&amp; msg.value != fees) throw;
@@ -62,7 +62,7 @@ contract WallDirectory {
 
     // Remove an entry from the directory:
     function remove(string name) {
-        if(bytes(name).length &lt; 2) throw;
+        if(bytes(name).length < 2) throw;
 
         uint256 i = index[sha3(name)];
         if(i == 0) throw;
@@ -78,7 +78,7 @@ contract WallDirectory {
     // Sets a user's nickname:
     function setUserDisplayName(string name) {
         // Restrict username length to 32 characters
-        if(bytes(name).length &gt; 32) throw;
+        if(bytes(name).length > 32) throw;
 
         // Set it!
         userDisplayNames[msg.sender] = name;
